@@ -52,6 +52,7 @@ const UploadField = (fileInput) => {
                     img({ src: imgSrc.val, class:'preview' }),
                     button({
                         class: "btn-sm txt-7",
+                        type: "button",
                         onclick: () => {
                             fileInput.value = null;
                             dispatchUpdate();
@@ -60,6 +61,7 @@ const UploadField = (fileInput) => {
                     }, "Remove image"),
                     button({
                         class: "btn-sm txt-7",
+                        type: "button",
                         onclick: () => fileInput.click()
                     },
                         "Change image"
