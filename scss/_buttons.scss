@@ -1,0 +1,29 @@
+@use '_colors';
+
+.btn-prim {
+    background-color: colors.$orange-700;
+    padding: 16px;
+    border: 0;
+    border-radius: 16px;
+
+    &:hover {
+        position: relative;
+        bottom: 4px;
+        cursor: pointer;
+        filter: drop-shadow(0 4px colors.$orange-500);
+    }
+}
+
+.btn-sec {
+    padding-block: 4px;
+    padding-inline: 8px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: colors.$neutral-0;
+
+    &:hover {
+        text-decoration: underline;
+        color: colors.$neutral-300;
+    }
+}

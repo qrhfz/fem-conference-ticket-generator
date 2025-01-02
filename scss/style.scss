@@ -4,6 +4,7 @@
 @use 'typography';
 @use 'icons';
 @use 'breakpoints';
+@use '_buttons';
 
 /** BACKGROUND **/
 body {
@@ -96,20 +97,6 @@ input[type="email"] {
 
 input[type="text"]::placeholder {
     color: colors.$neutral-300;
-}
-
-button {
-    background-color: colors.$orange-700;
-    padding: 16px;
-    border: 0;
-    border-radius: 1rem;
-
-    &:hover {
-        position: relative;
-        bottom: 4px;
-        cursor: pointer;
-        filter: drop-shadow(0 4px colors.$orange-500);
-    }
 }
 
 .upload-field {
@@ -207,19 +194,6 @@ button {
         grid-area: n;
         text-align: center;
         writing-mode: vertical-rl;
-    }
-}
-
-.btn-sm {
-    padding-block: 4px;
-    padding-inline: 8px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: colors.$neutral-0;
-
-
-    &:hover {
-        text-decoration: underline;
-        color: colors.$neutral-300;
     }
 }
 
