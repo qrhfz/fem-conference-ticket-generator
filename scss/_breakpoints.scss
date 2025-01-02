@@ -1,0 +1,17 @@
+@mixin screen($size) {
+    @media screen and (min-width: $size) {
+        @content
+    }
+}
+
+@mixin on-tablet {
+    @include screen(600px){
+        @content
+    }
+}
+
+@mixin on-desktop {
+    @include screen(1280px){
+        @content
+    }
+}

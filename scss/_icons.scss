@@ -1,4 +1,4 @@
-@use 'base';
+@use 'colors';
 
 @mixin icon($src) {
     display: inline-block;
@@ -15,7 +15,7 @@ span.icon-info {
 
 span.icon-info-danger {
     @include icon('/assets/images/icon-info.svg');
-    background: base.$clr-orange-500;
+    background: colors.$orange-500;
     mask-image: url('/assets/images/icon-info.svg');
 }
 

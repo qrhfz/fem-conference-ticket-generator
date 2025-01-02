@@ -1,8 +1,9 @@
 @use 'reset';
-@use 'base';
+@use 'colors';
 @use 'sizing';
 @use 'typography';
 @use 'icons';
+@use 'breakpoints';
 
 /** BACKGROUND **/
 body {
@@ -19,14 +20,13 @@ body {
 
 .container {
     padding-inline: 16px;
-}
 
-@media screen and (min-width: base.$bp-desktop) {
-    .container {
+    @include breakpoints.on-desktop {
         max-width: 891px;
         margin-inline: auto;
-    }    
+    }
 }
+
 
 .logo {
     width: 164px;
@@ -38,15 +38,13 @@ form {
     display: flex;
     flex-direction: column;
     gap: 24px;
-}
 
-@media screen and (min-width: base.$bp-desktop) {
-    form {
+    @include breakpoints.on-desktop {
         max-width: 460px;
         margin-inline: auto;
     }
-
 }
+
 
 label {
     display: block;
@@ -55,8 +53,9 @@ label {
 
 .hint {
     display: grid;
-    grid-template: "a b"/auto 1fr;
+    grid-template: "a b" /auto 1fr;
     gap: 8px;
+
     .hint-icon {
         grid-area: a;
     }
@@ -66,34 +65,35 @@ label {
     }
 }
 
-input[type="text"], input[type="email"] {
+input[type="text"],
+input[type="email"] {
     width: 100%;
     padding: 16px;
     background: hsla(0, 0%, 100%, 8%);
-    border: 1px solid base.$clr-neutral-500;
+    border: 1px solid colors.$neutral-500;
     border-radius: 12px;
     color: inherit;
-    
-    &:hover{
+
+    &:hover {
         cursor: pointer;
         background-color: rgba($color: #fff, $alpha: 0.2);
     }
 
     &:invalid {
-        border-color: base.$clr-orange-500;
+        border-color: colors.$orange-500;
     }
-    
-    &:valid + .hint {
+
+    &:valid+.hint {
         display: none;
     }
 }
 
 input[type="text"]::placeholder {
-    color: base.$clr-neutral-300;
+    color: colors.$neutral-300;
 }
 
 button {
-    background-color: base.$clr-orange-700;
+    background-color: colors.$orange-700;
     padding: 16px;
     border: 0;
     border-radius: 1rem;
@@ -102,14 +102,14 @@ button {
         position: relative;
         bottom: 4px;
         cursor: pointer;
-        filter: drop-shadow(0 4px base.$clr-orange-500);
+        filter: drop-shadow(0 4px colors.$orange-500);
     }
 }
 
 .upload-field {
     padding: 20px;
     background: hsla(0, 0%, 100%, 8%);
-    border: 1px dashed base.$clr-neutral-500;
+    border: 1px dashed colors.$neutral-500;
     border-radius: 12px;
     text-align: center;
     margin-bottom: 16px;
@@ -120,7 +120,7 @@ button {
         height: 50px;
         margin-inline: auto;
         margin-bottom: 16px;
-        border: 2px solid base.$clr-neutral-500;
+        border: 2px solid colors.$neutral-500;
         border-radius: 12px;
     }
 }
@@ -128,7 +128,7 @@ button {
 .upload-field-icon {
     padding: 12px;
     background: hsla(0, 0%, 100%, 10%);
-    border: 1px solid base.$clr-neutral-700;
+    border: 1px solid colors.$neutral-700;
     border-radius: 12px;
     text-align: center;
     margin-inline: auto;
@@ -146,13 +146,13 @@ button {
     padding: 16px;
     display: grid;
     grid-template: "e n"
-                   "a n"/1fr auto;
+        "a n" /1fr auto;
 
     .event-info {
         grid-area: e;
         display: grid;
-        grid-template:  "l n"
-                        "l d"/auto 1fr;
+        grid-template: "l n"
+            "l d" /auto 1fr;
         padding-bottom: 32px;
 
         .logo-wrapper {
@@ -173,18 +173,19 @@ button {
     .attendee-info {
         grid-area: a;
         display: grid;
-        grid-template:  "a n"
-                        "a g"/auto 1fr;
+        grid-template: "a n"
+            "a g" /auto 1fr;
 
-        .avatar{
+        .avatar {
             grid-area: a;
             padding-right: 12px;
+
             img {
                 width: 45px;
             }
         }
 
-        .name{
+        .name {
             grid-area: n;
         }
 
@@ -206,13 +207,13 @@ button {
 .btn-sm {
     padding-block: 4px;
     padding-inline: 8px;
-    background-color: rgba(255,255,255,0.1);
-    color: base.$clr-neutral-0;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: colors.$neutral-0;
 
 
     &:hover {
         text-decoration: underline;
-        color: base.$clr-neutral-300;
+        color: colors.$neutral-300;
     }
 }
 

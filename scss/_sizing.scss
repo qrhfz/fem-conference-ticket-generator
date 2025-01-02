@@ -6,8 +6,6 @@
     @return math.div($x, 16) * 1rem;
 }
 
-@debug s(16);
-
 $sizes: (
     2px, 
     4px,
