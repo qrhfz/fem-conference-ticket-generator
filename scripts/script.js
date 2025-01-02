@@ -49,7 +49,7 @@ const UploadField = (fileInput) => {
         },
             () => filled.val
                 ? div(
-                    img({ src: imgSrc.val }),
+                    img({ src: imgSrc.val, class:'preview' }),
                     button({
                         class: "btn-sm txt-7",
                         onclick: () => {
