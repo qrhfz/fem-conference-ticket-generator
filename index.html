@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+
+  <title>Frontend Mentor | Conference ticket generator</title>
+  <link rel="stylesheet" href="/style.css">
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution {
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
+  </style>
+  <script type="module" src="/scripts/script.js" defer></script>
+</head>
+
+<body>
+  <img src="/assets/images/logo-full.svg" alt="Coding Conf" class="logo">
+  <!-- Form starts -->
+  <div id="start">
+
+    <div class="container txt-center mb-10">
+      <h1 class="txt txt-1" style="margin-bottom: 1.25rem;">
+        Your Journey to Coding Conf 2025 Starts Here!
+      </h1>
+
+      <p class="txt-4">
+        Secure your spot at next year's biggest coding conference.
+      </p>
+    </div>
+
+    <form>
+      <div>
+        <label for="">
+          Upload Avatar
+        </label>
+        <upload-field>
+          <input type="file" name="" id="" accept="image/png, image/jpeg">
+        </upload-field>
+      </div>
+      <div>
+        <label for="#name-input">
+          Full Name
+        </label>
+        <input type="text" id="name-input" class="txt-6">
+      </div>
+
+      <div>
+        <label for="#email-input">
+          Email Address
+        </label>
+        <input type="email" id="email-input" class="txt-6" placeholder="example@email.com">
+        <div class="hint txt-orange-500 mt-4">
+          <div class="hint-icon">
+            <span class="icon-info-danger"></span>
+          </div>
+          <div class="hint-text">Please enter a valid email address.</div>
+        </div>
+      </div>
+
+      <div>
+        <label for="#github-input">
+          GitHub Username
+        </label>
+        <input type="text" id="github-input" class="txt-6" placeholder="@yourusername">
+      </div>
+
+      <button type="submit" class="txt-5x">
+        Generate My Ticket
+      </button>
+    </form>
+  </div>
+
+  <!-- Form ends -->
+
+  <!-- Generated tickets starts -->
+  <div id="ticket-generated" class="hidden">
+    <div class="container txt-center mb-8">
+      <span class="txt-1">
+        Congrats, <span class="result-name txt-grad-1">[Full Name Motherfucker]</span>! Your ticket is ready.
+      </span>
+    </div>
+    
+    <div class="container txt-center txt-4 mb-13">
+      We've emailed your ticket to <span class="result-email txt-orange-500">[Email Address]</span> and will send updates in the run up to the event.
+    </div>
+    
+    <div class="ticket">
+      <div class="event-info">
+        <div class="logo-wrapper">
+          <img src="/assets/images/logo-mark.svg" alt="logo">
+        </div>
+        <div class="event-name txt-2">
+          Coding Conf
+        </div>
+        <div class="date txt-6">
+          Jan 31, 2025 / Austin, TX
+        </div>
+      </div>
+      <div class="attendee-info">
+        <div class="avatar">
+          <img src="/assets/images/image-avatar.jpg" alt="avatar">
+        </div>
+        <div class="result-name name txt-4">
+          [Full Name]
+        </div>
+        <div class="github">
+          <span class="icon-github mr-1"></span>
+          <span class="result-github">
+            @[github]
+          </span>
+        </div>
+      </div>
+      <div class="ticket-number">
+        <div class="txt-3 txt-neutral-500">
+          #01609
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Generated tickets ends -->
+  <div class="mb-13"></div>
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>.
+    Coded by <a href="#">Your Name Here</a>.
+  </div>
+</body>
+
+</html>

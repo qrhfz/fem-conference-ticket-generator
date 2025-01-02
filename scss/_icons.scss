@@ -1,0 +1,28 @@
+@use 'base';
+
+@mixin icon($src) {
+    display: inline-block;
+    background-image: url($src);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 1rem;
+    height: 1rem;
+}
+
+span.icon-info {
+    @include icon('/assets/images/icon-info.svg')
+}
+
+span.icon-info-danger {
+    @include icon('/assets/images/icon-info.svg');
+    background: base.$clr-orange-500;
+    mask-image: url('/assets/images/icon-info.svg');
+}
+
+span.icon-github {
+    @include icon('/assets/images/icon-github.svg');
+}
+
+span.icon-upload {
+    @include icon('/assets/images/icon-upload.svg');
+}

@@ -1,0 +1,48 @@
+@use "sass:map";
+@use "sass:math";
+@use 'sass:list';
+
+@function s($x){
+    @return math.div($x, 16) * 1rem;
+}
+
+@debug s(16);
+
+$sizes: (
+    2px, 
+    4px,
+    6px,
+    8px,
+    12px,
+    16px,
+    20px,
+    24px,
+    32px,
+    40px,
+    48px,
+    64px,
+    80px,
+);
+
+$directions: (
+    '':'',
+    't':'-top',
+    'r':'-right',
+    'b':'-bottom',
+    'l':'-left',
+    'x':'-inline',
+    'y':'-block',
+);
+
+@for $i from 1 through list.length($sizes) {
+    $v: list.nth($sizes, $i);
+    @each $flag, $suffix in $directions {
+        .m#{$flag}-#{$i}{
+            margin#{$suffix}: $v;
+        }
+
+        .p#{$flag}-#{$i}{
+            padding#{$suffix}: $v;
+        }
+    }
+}
