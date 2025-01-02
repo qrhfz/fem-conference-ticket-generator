@@ -119,3 +119,5 @@ document.querySelector("form").addEventListener("submit", (ev) => {
     const ticketGenerated = document.querySelector("#ticket-generated");
     ticketGenerated.classList.remove("hidden");
 });
+
+document.querySelector('input[type="file"]#input-avatar').style.display = 'none';
