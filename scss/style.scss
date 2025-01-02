@@ -86,6 +86,12 @@ input[type="email"] {
     &:valid+.hint {
         display: none;
     }
+
+    &:focus {
+        box-shadow: 0 0 0 6px colors.$neutral-500;
+        outline: 2px solid colors.$neutral-900;
+        outline-offset: 1px;
+    }
 }
 
 input[type="text"]::placeholder {
