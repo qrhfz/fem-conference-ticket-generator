@@ -8,16 +8,22 @@ const { div, img, span, button } = van.tags;
  * @returns 
  */
 const UploadField = (fileInput) => {
-    const filled = van.state(true)
-    const imgSrc = van.state(null)
+    const filled = van.state(true);
+    const imgSrc = van.state(null);
+    const fileTooBigError = van.state(false);
 
     function update() {
         filled.val = fileInput.files.length !== 0;
+        const file = fileInput.files[0];
         if (filled.val) {
             if (imgSrc.val) {
-                URL.revokeObjectURL(imgSrc.val)
+                URL.revokeObjectURL(imgSrc.val);
+                fileTooBigError.val = false;
             }
-            imgSrc.val = URL.createObjectURL(fileInput.files[0])
+            imgSrc.val = URL.createObjectURL(file)
+            if(file.size > 500*1024){
+                fileTooBigError.val = true;
+            }
         }
     }
 
@@ -49,7 +55,7 @@ const UploadField = (fileInput) => {
         },
             () => filled.val
                 ? div(
-                    img({ src: imgSrc.val, class:'preview' }),
+                    img({ src: imgSrc.val, class: 'preview' }),
                     button({
                         class: "btn-sec txt-7",
                         type: "button",
@@ -81,13 +87,22 @@ const UploadField = (fileInput) => {
 
         ),
         div({ class: "hint" },
-            div({class:"hint-icon"},
-                span({ class: "icon-info" }),
+            div({ class: "hint-icon" },
+                span({ class: ()=>fileTooBigError.val?"icon-info-danger":"icon-info" }),
             ),
-            div(
-                {class:"hint-text txt-7"},
-                "Upload your photo (JPG or PNG, max size: 500KB).",
-            ),
+            () => {
+                if (fileTooBigError.val) {
+                    return div(
+                        { class: "hint-text txt-7 txt-orange-500" },
+                        "File too large. Please upload a photo under 500KB.",
+                    )
+                }
+
+                return div(
+                    { class: "hint-text txt-7" },
+                    "Upload your photo (JPG or PNG, max size: 500KB).",
+                )
+            },
         )
     ]
 }
