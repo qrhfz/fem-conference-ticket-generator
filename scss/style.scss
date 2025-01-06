@@ -144,8 +144,8 @@ input[type="text"]::placeholder {
 .ticket {
     background: url("/assets/images/pattern-ticket.svg#svgView(preserveAspectRatio(none))") center center no-repeat;
     background-size: 100% 100%;
-    margin-inline: auto;
     max-width: 600px;
+    margin-inline: 16px;
     padding: 16px;
     display: grid;
     grid-template: "e n"
@@ -204,6 +204,10 @@ input[type="text"]::placeholder {
         grid-area: n;
         text-align: center;
         writing-mode: vertical-rl;
+    }
+
+    @include breakpoints.on-tablet{
+        margin-inline: auto;
     }
 }
 
