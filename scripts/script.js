@@ -62,6 +62,7 @@ function StartSection() {
             ),
         ),
         form(
+            {onclick:e=>e.preventDefault()},
             div(
                 label({ for: "#avatar-input" },
                     "Upload Avatar",
@@ -72,13 +73,13 @@ function StartSection() {
                 label({ for: "#name-input" },
                     "Full Name",
                 ),
-                input({ type: "text", id: "name-input", class: "txt-6" }),
+                input({ type: "text", id: "name-input", class: "txt-6", required:true }),
             ),
             div(
                 label({ for: "#email-input" },
                     "Email Address",
                 ),
-                input({ type: "email", id: "email-input", class: "txt-6", placeholder: "example@email.com" }),
+                input({ type: "email", id: "email-input", class: "txt-6", placeholder: "example@email.com", required:true }),
                 div({ class: "hint txt-orange-500 mt-4" },
                     div({ class: "hint-icon" },
                         span({ class: "icon-info-danger" }),
@@ -92,7 +93,7 @@ function StartSection() {
                 label({ for: "#github-input" },
                     "GitHub Username",
                 ),
-                input({ type: "text", id: "github-input", class: "txt-6", placeholder: "@yourusername" }),
+                input({ type: "text", id: "github-input", class: "txt-6", placeholder: "@yourusername", required: true }),
             ),
             button({ type: "submit", class: "btn-prim txt-5x" },
                 "Generate My Ticket",
