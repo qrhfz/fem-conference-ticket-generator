@@ -90,11 +90,15 @@ input[type="email"] {
         background-color: rgba($color: #fff, $alpha: 0.2);
     }
 
-    &:invalid {
+    &:invalid:not(:focus) {
         border-color: colors.$orange-500;
     }
 
     &:valid+.hint {
+        display: none;
+    }
+
+    &:focus+.hint {
         display: none;
     }
 
