@@ -138,15 +138,15 @@ function StartSection(states) {
                     "Email Address",
                 ),
                 emailInput,
-                states.emailError.val?
-                div({ class: "hint txt-orange-500 mt-4" },
-                    div({ class: "hint-icon" },
-                        span({ class: "icon-info-danger" }),
-                    ),
-                    div({ class: "hint-text" },
-                        "Please enter a valid email address.",
-                    ),
-                ):null,
+                states.emailError.val ?
+                    div({ class: "hint txt-orange-500 mt-4" },
+                        div({ class: "hint-icon" },
+                            span({ class: "icon-info-danger" }),
+                        ),
+                        div({ class: "hint-text" },
+                            "Please enter a valid email address.",
+                        ),
+                    ) : null,
             ),
             div(
                 label({ for: "#github-input" },
@@ -224,7 +224,10 @@ function TicketGeneratedSection(states) {
  */
 function UploadField(imgSrc) {
 
-    const fileInput = input({ type: "file", id: "input-avatar", accept: "image/png, image/jpeg" });
+    const fileInput = input({
+        type: "file", id: "input-avatar",
+        accept: "image/png, image/jpeg", required: true
+    });
     const filled = van.state(true);
 
 
