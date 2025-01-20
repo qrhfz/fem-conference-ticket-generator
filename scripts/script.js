@@ -289,7 +289,6 @@ function UploadField(states) {
         type: "file", id: "input-avatar",
         accept: "image/png, image/jpeg", required: true
     });
-    const fileTooBigError = van.state(false);
 
 
 
@@ -354,10 +353,10 @@ function UploadField(states) {
         ),
         div({ class: "hint" },
             div({ class: "hint-icon" },
-                span({ class: () => fileTooBigError.val ? "icon-info-danger" : "icon-info" }),
+                span({ class: () => states.avatarError.val ? "icon-info-danger" : "icon-info" }),
             ),
             () => {
-                if (fileTooBigError.val) {
+                if (states.avatarError.val === "tooBig") {
                     return div(
                         { class: "hint-text txt-7 txt-orange-500" },
                         "File too large. Please upload a photo under 500KB.",
