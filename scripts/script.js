@@ -228,33 +228,30 @@ function UploadField(imgSrc) {
         type: "file", id: "input-avatar",
         accept: "image/png, image/jpeg", required: true
     });
-    const filled = van.state(true);
-
-
+    /** @type {State<File?>} */
+    const fileState = van.state(null);
     const fileTooBigError = van.state(false);
 
-    function update() {
-        filled.val = fileInput.files?.length !== 0;
-        const file = fileInput.files?.[0];
-        if (filled.val) {
-            if (imgSrc.val) {
-                URL.revokeObjectURL(imgSrc.val);
-                fileTooBigError.val = false;
-            }
 
-            if (file) {
-                imgSrc.val = URL.createObjectURL(file);
 
-                if (file.size > 500 * 1024) {
-                    fileTooBigError.val = true;
-                }
-            }
-        }
-    }
-
-    update();
     fileInput.addEventListener("change", (ev) => {
-        update();
+        const file = fileInput.files?.[0];
+        fileState.val = file ? file : null;
+    })
+
+    van.derive(()=>{
+        const file = fileState.val;
+        if (file) {
+            imgSrc.val = URL.createObjectURL(file);
+
+            fileTooBigError.val = file.size > 500 * 1024;
+
+        }else{
+            if(imgSrc.val){
+                URL.revokeObjectURL(imgSrc.val);
+            }
+            fileTooBigError.val = false;
+        }
     })
 
     function dispatchUpdate() {
@@ -278,7 +275,7 @@ function UploadField(imgSrc) {
                 fileInput.click();
             }
         },
-            () => filled.val
+            () => fileState.val
                 ? div(
                     img({ src: imgSrc.val, class: 'preview' }),
                     button({
