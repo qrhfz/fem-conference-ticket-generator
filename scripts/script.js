@@ -138,6 +138,7 @@ function StartSection(states) {
                     "Email Address",
                 ),
                 emailInput,
+                states.emailError.val?
                 div({ class: "hint txt-orange-500 mt-4" },
                     div({ class: "hint-icon" },
                         span({ class: "icon-info-danger" }),
@@ -145,7 +146,7 @@ function StartSection(states) {
                     div({ class: "hint-text" },
                         "Please enter a valid email address.",
                     ),
-                ),
+                ):null,
             ),
             div(
                 label({ for: "#github-input" },
