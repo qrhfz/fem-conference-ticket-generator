@@ -73,7 +73,7 @@ function StartSection() {
                 label({ for: "#name-input" },
                     "Full Name",
                 ),
-                input({ type: "text", id: "name-input", class: "txt-6", required:true }),
+                input({ type: "text", id: "name-input", class: "txt-6", placeholder:" ", required:true }),
             ),
             div(
                 label({ for: "#email-input" },
