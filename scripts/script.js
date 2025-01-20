@@ -58,25 +58,27 @@ function App() {
         }
 
         if (!avatar.val) {
-            return "empty"
+            return "empty";
         }
 
         if (avatar.val.size > 500 * 1024) {
-            return "tooBig"
+            return "tooBig";
         }
 
         return null;
     })
     const avatarURL = van.derive(() => {
-        if (avatarURL.oldVal) {
-            URL.revokeObjectURL(avatarURL.oldVal);
-        }
         if (avatar.val) {
             return URL.createObjectURL(avatar.val);
         }
 
         return null;
     });
+    van.derive(()=>{
+        if(avatarURL.oldVal){
+            URL.revokeObjectURL(avatarURL.oldVal)
+        }
+    })
 
     /** @type {State<string?>} */
     const name = van.state(null);
