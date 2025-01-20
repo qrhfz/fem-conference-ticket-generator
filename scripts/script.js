@@ -21,7 +21,8 @@ van.add(document.querySelector("#app"), App());
 
 /**
  * @typedef {object} States
- * @property {State<string?>} avatar
+ * @property {State<File?>} avatar
+ * @property {State<string?>} avatarURL
  * @property {State<("tooBig"|"empty")?>} avatarError
  * @property {State<string?>} name
  * @property {State<"empty"?>} nameError
@@ -35,7 +36,6 @@ van.add(document.querySelector("#app"), App());
 /**
  * @callback GenerateTicketFn
  * @param {object} prop
- * @param {string} prop.avatarImgSrc
  * @param {string} prop.name
  * @param {string} prop.email
  * @param {string} prop.github
@@ -46,21 +46,82 @@ van.add(document.querySelector("#app"), App());
  * @returns {HTMLDivElement}
  */
 function App() {
+    /** @type {State<boolean>} */
+    const submitted = van.state(false);
+
+    /** @type {State<File?>} */
+    const avatar = van.state(null);
+    /** @type {State<("empty"|"tooBig")?>} */
+    const avatarError = van.derive(() => {
+        if ((!submitted.val)) {
+            return null;
+        }
+
+        if (!avatar.val) {
+            return "empty"
+        }
+
+        if (avatar.val.size > 500 * 1024) {
+            return "tooBig"
+        }
+
+        return null;
+    })
+    const avatarURL = van.derive(() => {
+        if (avatarURL.oldVal) {
+            URL.revokeObjectURL(avatarURL.oldVal);
+        }
+        if (avatar.val) {
+            return URL.createObjectURL(avatar.val);
+        }
+
+        return null;
+    });
+
+    /** @type {State<string?>} */
+    const name = van.state(null);
+    const nameError = van.derive(() => {
+        if (name.val) {
+            return null;
+        }
+
+        return "empty";
+    });
+
+    /** @type {State<string?>} */
+    const email = van.state(null);
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const emailError = van.derive(() => {
+        if (!submitted.val) {
+            return null;
+        }
+
+        if (email.val && emailRegex.exec(email.val)) {
+            return null;
+        }
+
+        return "invalid";
+    })
+
+    /** @type {State<string?>} */
+    const github = van.state(null);
+    const githubError = van.derive(() => {
+        if (github.val) {
+            return null;
+        }
+
+        return "empty";
+    });
 
     /** @type {States} */
     const states = {
-        avatar: van.state(null), avatarError: van.state(null),
-        name: van.state(null), nameError: van.state(null),
-        email: van.state(null), emailError: van.state(null),
-        github: van.state(null), githubError: van.state(null),
+        avatar, avatarError,avatarURL, name, nameError,
+        email, emailError, github, githubError,
 
-        generateTicket: function ({ avatarImgSrc, name, email, github }) {
-            this.avatar.val = avatarImgSrc;
+        generateTicket: function ({ name, email, github }) {
             this.name.val = name;
-            this.nameError.val = (name.length === 0) ? "empty" : null;
             this.email.val = email;
             this.github.val = github;
-            this.githubError.val = (github.length === 0) ? "empty" : null;
         }
     }
 
@@ -95,15 +156,13 @@ function StartSection(states) {
         type: "text", id: "github-input", class: "txt-6",
         placeholder: "@yourusername", required: true
     });
-    /** @type {State<string>} */
-    const avatarImgSrc = van.state("");
+
     /**
      * @param {Event} e
      */
     function onFormInput(e) {
         e.preventDefault();
         states.generateTicket({
-            avatarImgSrc: avatarImgSrc.val,
             name: nameInput.value,
             github: githubInput.value,
             email: emailInput.value,
@@ -125,7 +184,7 @@ function StartSection(states) {
                 label({ for: "#avatar-input" },
                     "Upload Avatar",
                 ),
-                UploadField(avatarImgSrc),
+                UploadField(states),
             ),
             div(
                 label({ for: "#name-input" },
@@ -197,7 +256,7 @@ function TicketGeneratedSection(states) {
             ),
             div({ class: "attendee-info" },
                 div({ class: "avatar" },
-                    img({ src: states.avatar.val, alt: "avatar" }),
+                    img({ src: states.avatarURL, alt: "avatar" }),
                 ),
                 div({ class: "result-name name txt-4" },
                     states.name.val,
@@ -219,39 +278,22 @@ function TicketGeneratedSection(states) {
 }
 /**
  * 
- * @param {State<string?>} imgSrc 
+ * @param {States} states 
  * @returns 
  */
-function UploadField(imgSrc) {
+function UploadField(states) {
 
     const fileInput = input({
         type: "file", id: "input-avatar",
         accept: "image/png, image/jpeg", required: true
     });
-    /** @type {State<File?>} */
-    const fileState = van.state(null);
     const fileTooBigError = van.state(false);
 
 
 
     fileInput.addEventListener("change", (ev) => {
         const file = fileInput.files?.[0];
-        fileState.val = file ? file : null;
-    })
-
-    van.derive(()=>{
-        const file = fileState.val;
-        if (file) {
-            imgSrc.val = URL.createObjectURL(file);
-
-            fileTooBigError.val = file.size > 500 * 1024;
-
-        }else{
-            if(imgSrc.val){
-                URL.revokeObjectURL(imgSrc.val);
-            }
-            fileTooBigError.val = false;
-        }
+        states.avatar.val = file ? file : null;
     })
 
     function dispatchUpdate() {
@@ -275,9 +317,9 @@ function UploadField(imgSrc) {
                 fileInput.click();
             }
         },
-            () => fileState.val
+            () => states.avatar.val
                 ? div(
-                    img({ src: imgSrc.val, class: 'preview' }),
+                    img({ src: states.avatarURL.val, class: 'preview' }),
                     button({
                         class: "btn-sec txt-7",
                         type: "button",
