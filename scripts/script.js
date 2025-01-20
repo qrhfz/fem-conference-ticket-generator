@@ -10,48 +10,105 @@ const { div, img, span, button, h1, p, form, label, input } = van.tags;
 // @ts-ignore
 van.add(document.querySelector("#app"), App());
 
+
+/**
+ * @typedef {Object} Airline 
+ * @property {String} airline
+ * @property {String} iataCode
+ * @property {Array} bookings The array of bookings
+ * @property {(flightNum: number, name: string) => void} book Book a seat on a flight
+ */
+
+/**
+ * @typedef {object} States
+ * @property {State<string?>} avatar
+ * @property {State<("tooBig"|"empty")?>} avatarError
+ * @property {State<string?>} name
+ * @property {State<"empty"?>} nameError
+ * @property {State<string?>} email
+ * @property {State<"invalid"?>} emailError
+ * @property {State<string?>} github
+ * @property {State<"empty"?>} githubError
+ * @property {GenerateTicketFn} generateTicket
+ */
+
+/**
+ * @callback GenerateTicketFn
+ * @param {object} prop
+ * @param {string} prop.avatarImgSrc
+ * @param {string} prop.name
+ * @param {string} prop.email
+ * @param {string} prop.github
+*/
+
+
+/**
+ * @returns {HTMLDivElement}
+ */
 function App() {
-    /**
-     * @type {State<string?>}}
-     */
-    const avatar = van.state(null);
-    /**
-     * @type {State<("tooBig"|"empty")?>}}
-     */
-    const avatarError = van.state(null);
-    /**
-     * @type {State<string?>}}
-     */
-    const name = van.state();
-    /**
-     * @type {State<"empty"?>}}
-     */
-    const nameError = van.state();
-    /**
-     * @type {State<string?>}}
-     */
-    const email = van.state();
-    /**
-     * @type {State<"invalid"?>}}
-     */
-    const emailError = van.state();
-    /**
-     * @type {State<string?>}}
-     */
-    const github = van.state();
-    /**
-    * @type {State<"empty"?>}}
-    */
-    const githubError = van.state();
 
+    /** @type {States} */
+    const states = {
+        avatar: van.state(null), avatarError: van.state(null),
+        name: van.state(null), nameError: van.state(null),
+        email: van.state(null), emailError: van.state(null),
+        github: van.state(null), githubError: van.state(null),
 
-    const hasTicket = van.state(true);
+        generateTicket: function ({ avatarImgSrc, name, email, github }) {
+            this.avatar.val = avatarImgSrc;
+            this.name.val = name;
+            this.nameError.val = (name.length === 0) ? "empty" : null;
+            this.email.val = email;
+            this.github.val = github;
+            this.githubError.val = (github.length === 0) ? "empty" : null;
+        }
+    }
 
-    return div(() => hasTicket.val ? StartSection() : TicketGeneratedSection())
+    const hasTicket = van.derive(() => {
+        return states.name.val
+            && states.avatar.val
+            && states.email.val
+            && states.github.val
+            && (states.nameError.val === null)
+            && (states.avatarError.val === null)
+            && (states.emailError.val === null)
+            && (states.githubError.val === null);
+    });
+
+    return div(() => hasTicket.val ? TicketGeneratedSection(states) : StartSection(states));
 }
 
+/**
+ * @param {States} states 
+ * @returns 
+ */
+function StartSection(states) {
+    const nameInput = input({
+        type: "text", id: "name-input", class: "txt-6",
+        placeholder: " ", required: true
+    });
+    const emailInput = input({
+        type: "email", id: "email-input", class: "txt-6",
+        placeholder: "example@email.com", required: true
+    });
+    const githubInput = input({
+        type: "text", id: "github-input", class: "txt-6",
+        placeholder: "@yourusername", required: true
+    });
 
-function StartSection() {
+    /**
+     * @param {Event} e
+     */
+    function onFormInput(e) {
+        e.preventDefault();
+        states.generateTicket({
+            avatarImgSrc: "/assets/images/image-avatar.jpg",
+            name: nameInput.value,
+            github: githubInput.value,
+            email: emailInput.value,
+        })
+    }
+
     return div({ id: "start" },
         div({ class: "container txt-center mb-10" },
             h1({ class: "txt txt-1", style: "margin-bottom: 1.25rem;" },
@@ -62,7 +119,7 @@ function StartSection() {
             ),
         ),
         form(
-            {onclick:e=>e.preventDefault()},
+            { onsubmit: onFormInput },
             div(
                 label({ for: "#avatar-input" },
                     "Upload Avatar",
@@ -73,13 +130,13 @@ function StartSection() {
                 label({ for: "#name-input" },
                     "Full Name",
                 ),
-                input({ type: "text", id: "name-input", class: "txt-6", placeholder:" ", required:true }),
+                nameInput,
             ),
             div(
                 label({ for: "#email-input" },
                     "Email Address",
                 ),
-                input({ type: "email", id: "email-input", class: "txt-6", placeholder: "example@email.com", required:true }),
+                emailInput,
                 div({ class: "hint txt-orange-500 mt-4" },
                     div({ class: "hint-icon" },
                         span({ class: "icon-info-danger" }),
@@ -93,7 +150,7 @@ function StartSection() {
                 label({ for: "#github-input" },
                     "GitHub Username",
                 ),
-                input({ type: "text", id: "github-input", class: "txt-6", placeholder: "@yourusername", required: true }),
+                githubInput,
             ),
             button({ type: "submit", class: "btn-prim txt-5x" },
                 "Generate My Ticket",
@@ -101,14 +158,18 @@ function StartSection() {
         ),
     )
 }
-
-function TicketGeneratedSection() {
+/**
+ * 
+ * @param {States} states 
+ * @returns 
+ */
+function TicketGeneratedSection(states) {
     return div({ id: "ticket-generated" },
         div({ class: "container txt-center mb-8" },
             span({ class: "txt-1" },
                 "Congrats, ",
                 span({ class: "result-name txt-grad-1" },
-                    "[Full Name Motherfucker]",
+                    states.name.val,
                 ),
                 "! Your ticket is ready.",
             ),
@@ -116,7 +177,7 @@ function TicketGeneratedSection() {
         div({ class: "container txt-center txt-4 mb-13" },
             "We've emailed your ticket to ",
             span({ class: "result-email txt-orange-500" },
-                "[Email Address]",
+                states.email.val,
             ),
             " and will send updates in the run up to the event.",
         ),
@@ -134,15 +195,15 @@ function TicketGeneratedSection() {
             ),
             div({ class: "attendee-info" },
                 div({ class: "avatar" },
-                    img({ src: "/assets/images/image-avatar.jpg", alt: "avatar" }),
+                    img({ src: states.avatar.val, alt: "avatar" }),
                 ),
                 div({ class: "result-name name txt-4" },
-                    "[Full Name]",
+                    states.name.val,
                 ),
                 div({ class: "github" },
                     span({ class: "icon-github mr-1" }),
                     span({ class: "result-github" },
-                        "@[github]",
+                        `@${states.github.val}`,
                     ),
                 ),
             ),

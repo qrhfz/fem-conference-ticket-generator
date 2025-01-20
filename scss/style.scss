@@ -76,6 +76,14 @@ label {
     }
 }
 
+// @mixin show-error {
+//     border-color: colors.$orange-500;
+
+//     &+.hint {
+//         display: grid;
+//     }
+// }
+
 input[type="text"],
 input[type="email"] {
     width: 100%;
@@ -90,24 +98,24 @@ input[type="email"] {
         background-color: rgba($color: #fff, $alpha: 0.2);
     }
 
-    &:invalid:not(:focus) {
-        border-color: colors.$orange-500;
-    }
-
-    &:valid+.hint {
-        display: none;
-    }
-
-    &:focus+.hint {
-        display: none;
-    }
-
     &:focus {
         box-shadow: 0 0 0 6px colors.$neutral-500;
         outline: 2px solid colors.$neutral-900;
         outline-offset: 1px;
     }
+
+    .has-error{
+        border-color: colors.$orange-500;
+    }
+    // &+.hint {
+    //     display: none;
+    // }
+
+    // &:invalid:not(:placeholder-shown):not(:focus) {
+    //     @include show-error();
+    // }
 }
+
 
 input[type="text"]::placeholder {
     color: colors.$neutral-300;
@@ -210,7 +218,7 @@ input[type="text"]::placeholder {
         writing-mode: vertical-rl;
     }
 
-    @include breakpoints.on-tablet{
+    @include breakpoints.on-tablet {
         margin-inline: auto;
     }
 }
