@@ -95,14 +95,15 @@ function StartSection(states) {
         type: "text", id: "github-input", class: "txt-6",
         placeholder: "@yourusername", required: true
     });
-
+    /** @type {State<string>} */
+    const avatarImgSrc = van.state("");
     /**
      * @param {Event} e
      */
     function onFormInput(e) {
         e.preventDefault();
         states.generateTicket({
-            avatarImgSrc: "/assets/images/image-avatar.jpg",
+            avatarImgSrc: avatarImgSrc.val,
             name: nameInput.value,
             github: githubInput.value,
             email: emailInput.value,
@@ -124,7 +125,7 @@ function StartSection(states) {
                 label({ for: "#avatar-input" },
                     "Upload Avatar",
                 ),
-                UploadField(),
+                UploadField(avatarImgSrc),
             ),
             div(
                 label({ for: "#name-input" },
@@ -215,16 +216,17 @@ function TicketGeneratedSection(states) {
         ),
     )
 }
-
-function UploadField() {
+/**
+ * 
+ * @param {State<string?>} imgSrc 
+ * @returns 
+ */
+function UploadField(imgSrc) {
 
     const fileInput = input({ type: "file", id: "input-avatar", accept: "image/png, image/jpeg" });
     const filled = van.state(true);
 
-    /**
-     * @type {State<string|null>}
-     */
-    const imgSrc = van.state(null);
+
     const fileTooBigError = van.state(false);
 
     function update() {
