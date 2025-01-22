@@ -115,7 +115,7 @@ function App() {
         generateTicket: function ({ name, email, github }) {
             this.name.val = name;
             this.email.val = email;
-            this.github.val = github;
+            this.github.val = github.startsWith("@")?github.substring(1):github;
         }
     }
 
