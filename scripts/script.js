@@ -46,16 +46,12 @@ van.add(document.querySelector("#app"), App());
  * @returns {HTMLDivElement}
  */
 function App() {
-    /** @type {State<boolean>} */
-    const submitted = van.state(false);
+
 
     /** @type {State<File?>} */
     const avatar = van.state(null);
     /** @type {State<("empty"|"tooBig")?>} */
     const avatarError = van.derive(() => {
-        if ((!submitted.val)) {
-            return null;
-        }
 
         if (!avatar.val) {
             return "empty";
@@ -94,10 +90,6 @@ function App() {
     const email = van.state(null);
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const emailError = van.derive(() => {
-        if (!submitted.val) {
-            return null;
-        }
-
         if (email.val && emailRegex.exec(email.val)) {
             return null;
         }
@@ -174,7 +166,7 @@ function StartSection(states) {
     /**
      * @param {Event} e
      */
-    function onFormInput(e) {
+    function onFormSubmit(e) {
         e.preventDefault();
         states.generateTicket({
             name: nameInput.value,
@@ -193,7 +185,7 @@ function StartSection(states) {
             ),
         ),
         form(
-            { onsubmit: onFormInput },
+            { onsubmit: onFormSubmit },
             div(
                 label({ for: "#avatar-input" },
                     "Upload Avatar",
@@ -364,7 +356,7 @@ function UploadField(states) {
         ),
         div({ class: "hint" },
             div({ class: "hint-icon" },
-                span({ class: () => states.avatarError.val ? "icon-info-danger" : "icon-info" }),
+                span({ class: () => states.avatarError.val === "tooBig" ? "icon-info-danger" : "icon-info" }),
             ),
             () => {
                 if (states.avatarError.val === "tooBig") {
