@@ -115,14 +115,14 @@ input[type="email"] {
             display: grid;
         }
     }
+
+    &::placeholder {
+        color: colors.$neutral-300;
+    }
 }
 
 
-input[type="text"]::placeholder {
-    color: colors.$neutral-300;
-}
-
-.upload-field {
+input[type="text"] .upload-field {
     padding: 20px;
     background: hsla(0, 0%, 100%, 8%);
     border: 1px dashed colors.$neutral-500;
