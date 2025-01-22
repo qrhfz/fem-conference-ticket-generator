@@ -138,6 +138,7 @@ input[type="text"]::placeholder {
         margin-bottom: 16px;
         border: 2px solid colors.$neutral-500;
         border-radius: 12px;
+        object-fit: cover;
     }
 }
 
@@ -198,6 +199,8 @@ input[type="text"]::placeholder {
 
             img {
                 width: 45px;
+                height: 45px;
+                object-fit: cover;
             }
         }
 
