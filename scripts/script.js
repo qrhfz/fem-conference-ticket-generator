@@ -141,6 +141,7 @@ function StartSection(states) {
     const nameInput = input({
         type: "text", id: "name-input", class: "txt-6",
         placeholder: " ", required: true,
+        value: states.name.val,
         onchange: (e) => {
             /** @type {HTMLInputElement} */
             const input = e.currentTarget;
@@ -151,6 +152,7 @@ function StartSection(states) {
     const emailInput = input({
         type: "email", id: "email-input", class: "txt-6",
         placeholder: "example@email.com", required: true,
+        value: states.email.val,
         onchange: (e) => {
             /** @type {HTMLInputElement} */
             const input = e.currentTarget;
@@ -160,7 +162,14 @@ function StartSection(states) {
     });
     const githubInput = input({
         type: "text", id: "github-input", class: "txt-6",
-        placeholder: "@yourusername", required: true
+        placeholder: "@yourusername", required: true,
+        value: states.github.val,
+        onchange: (e) => {
+            /** @type {HTMLInputElement} */
+            const input = e.currentTarget;
+            input.classList.add("changed");
+            input.onchange = null;
+        }
     });
 
     /**
