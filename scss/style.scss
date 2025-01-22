@@ -104,16 +104,17 @@ input[type="email"] {
         outline-offset: 1px;
     }
 
-    .has-error{
-        border-color: colors.$orange-500;
+    &+.hint {
+        display: none;
     }
-    // &+.hint {
-    //     display: none;
-    // }
 
-    // &:invalid:not(:placeholder-shown):not(:focus) {
-    //     @include show-error();
-    // }
+    &.changed:invalid:not(:focus) {
+        border-color: colors.$orange-500;
+
+        &+.hint {
+            display: grid;
+        }
+    }
 }
 
 

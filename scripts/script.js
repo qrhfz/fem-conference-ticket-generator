@@ -74,8 +74,8 @@ function App() {
 
         return null;
     });
-    van.derive(()=>{
-        if(avatarURL.oldVal){
+    van.derive(() => {
+        if (avatarURL.oldVal) {
             URL.revokeObjectURL(avatarURL.oldVal)
         }
     })
@@ -117,7 +117,7 @@ function App() {
 
     /** @type {States} */
     const states = {
-        avatar, avatarError,avatarURL, name, nameError,
+        avatar, avatarError, avatarURL, name, nameError,
         email, emailError, github, githubError,
 
         generateTicket: function ({ name, email, github }) {
@@ -148,11 +148,23 @@ function App() {
 function StartSection(states) {
     const nameInput = input({
         type: "text", id: "name-input", class: "txt-6",
-        placeholder: " ", required: true
+        placeholder: " ", required: true,
+        onchange: (e) => {
+            /** @type {HTMLInputElement} */
+            const input = e.currentTarget;
+            input.classList.add("changed");
+            input.onchange = null;
+        }
     });
     const emailInput = input({
         type: "email", id: "email-input", class: "txt-6",
-        placeholder: "example@email.com", required: true
+        placeholder: "example@email.com", required: true,
+        onchange: (e) => {
+            /** @type {HTMLInputElement} */
+            const input = e.currentTarget;
+            input.classList.add("changed");
+            input.onchange = null;
+        }
     });
     const githubInput = input({
         type: "text", id: "github-input", class: "txt-6",
@@ -199,15 +211,14 @@ function StartSection(states) {
                     "Email Address",
                 ),
                 emailInput,
-                states.emailError.val ?
-                    div({ class: "hint txt-orange-500 mt-4" },
-                        div({ class: "hint-icon" },
-                            span({ class: "icon-info-danger" }),
-                        ),
-                        div({ class: "hint-text" },
-                            "Please enter a valid email address.",
-                        ),
-                    ) : null,
+                div({ class: "hint txt-orange-500 mt-4" },
+                    div({ class: "hint-icon" },
+                        span({ class: "icon-info-danger" }),
+                    ),
+                    div({ class: "hint-text" },
+                        "Please enter a valid email address.",
+                    ),
+                ),
             ),
             div(
                 label({ for: "#github-input" },
